@@ -13,40 +13,20 @@ type Job struct {
 	Title              string
 	Company            string
 	Location           string
-	ModalityID         uint
-	Modality           Modality `gorm:"foreignKey:ModalityID"`
+	Modality           string
 	PostedDate         string
 	ExpiresDate        string
 	Salary             string
 	Url                string
 	MinYearsExperience int
-	DegreeID           uint
+	Degree             string
 	MinDegree          string
-	DomainID           uint
-	Domain             Domain `gorm:"foreignKey:DomainID"`
+	Domain             string
 	Description        string `gorm:"type:text"`
 	ParsedDescription  string `gorm:"type:text"`
 	S3Pointer          string
 	Languages          []Language  `gorm:"many2many:job_languages;"`
 	Frameworks         []Framework `gorm:"many2many:job_frameworks;"`
-}
-
-type Domain struct {
-	gorm.Model
-	Name string `gorm:"uniqueIndex;type:varchar(30)"`
-	Jobs []Job  `gorm:"foreignKey:DomainID"`
-}
-
-type Modality struct {
-	gorm.Model
-	Name       string     `gorm:"uniqueIndex;type:varchar(30)"`
-	Modalities []Modality `gorm:"foreignKey:ModalityID"`
-}
-
-type Degree struct {
-	gorm.Model
-	Name    string   `gorm:"uniqueIndex;type:varchar(30)"`
-	Degrees []Degree `gorm:"foreignKey:DegreeID"`
 }
 
 type Language struct {
@@ -92,46 +72,36 @@ type JobMetadata struct {
 	S3Pointer          string
 }
 
-// ValidDomains represents the allowed domain values
-func SeedDomains(db *gorm.DB) error {
-	domains := []Domain{
-		{Name: "Backend"},
-		{Name: "Full-Stack"},
-		{Name: "AI/ML"},
-		{Name: "Data"},
-		{Name: "QA"},
-		{Name: "Front-End"},
-		{Name: "Security"},
-		{Name: "DevOps"},
-		{Name: "Mobile"},
-		{Name: "Site Reliability"},
-		{Name: "Networking"},
-		{Name: "Embedded Systems"},
-		{Name: "Gaming"},
-		{Name: "Financial"},
-		{Name: "Other"},
-	}
-
-	return db.FirstOrCreate(&domains).Error
+// AllowedDomains are the valid domain strings.
+var AllowedDomains = []string{
+	"Backend",
+	"Full-Stack",
+	"AI/ML",
+	"Data",
+	"QA",
+	"Front-End",
+	"Security",
+	"DevOps",
+	"Mobile",
+	"Site Reliability",
+	"Networking",
+	"Embedded Systems",
+	"Gaming",
+	"Financial",
+	"Other",
 }
 
-func SeedModalities(db *gorm.DB) error {
-	modalities := []Modality{
-		{Name: "In-Office"},
-		{Name: "Hybrid"},
-		{Name: "Remote"},
-	}
-
-	return db.FirstOrCreate(&modalities).Error
+// AllowedModalities are the valid modality strings.
+var AllowedModalities = []string{
+	"In-Office",
+	"Hybrid",
+	"Remote",
 }
 
-func SeedDegrees(db *gorm.DB) error {
-	degrees := []Degree{
-		{Name: "Bachelor's"},
-		{Name: "Master's"},
-		{Name: "Ph.D"},
-		{Name: "Unspecified"},
-	}
-
-	return db.FirstOrCreate(&degrees).Error
+// AllowedDegrees are the valid degree strings.
+var AllowedDegrees = []string{
+	"Bachelor's",
+	"Master's",
+	"Ph.D",
+	"Unspecified",
 }

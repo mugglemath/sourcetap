@@ -67,15 +67,11 @@ func Parser(jobs []Job) []Job {
 		jobs[i].MinYearsExperience = res.MinYearsExperience
 
 		if res.Modality != "" {
-			jobs[i].Modality = Modality{
-				Name: res.Modality,
-			}
+			jobs[i].Modality = res.Modality
 		}
 
 		if res.Domain != "" {
-			jobs[i].Domain = Domain{
-				Name: res.Domain,
-			}
+			jobs[i].Domain = res.Domain
 		}
 
 		for _, langName := range res.Languages {

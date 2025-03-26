@@ -1,0 +1,13 @@
+name: sourcetap
+services:
+  postgres:
+    image: postgres:17.4-alpine
+    ports:
+      - "5432:5432"
+    env_file:
+      - ../backend/go/sourcetap/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
