@@ -8,7 +8,7 @@ import (
 
 // Job struct to be used by the backend and initial scraping
 type Job struct {
-	gorm.Model
+	ID                 uint   `gorm:"primaryKey;autoIncrement"`
 	JobId              string `gorm:"uniqueIndex"`
 	Title              string
 	Company            string
@@ -22,8 +22,8 @@ type Job struct {
 	Degree             string
 	MinDegree          string
 	Domain             string
-	Description        string `gorm:"type:text"`
-	ParsedDescription  string `gorm:"type:text"`
+	Description        string `gorm:"-"`
+	ParsedDescription  string `gorm:"-"`
 	S3Pointer          string
 	Languages          []Language  `gorm:"many2many:job_languages;"`
 	Frameworks         []Framework `gorm:"many2many:job_frameworks;"`
@@ -65,7 +65,7 @@ type JobMetadata struct {
 	Url                string
 	Modality           string
 	MinYearsExperience int
-	MinDegree          bool
+	MinDegree          string
 	Domain             string
 	Languages          []string
 	Frameworks         []string

@@ -25,9 +25,16 @@ func main() {
 	// migrate schema from structs in models.go
 	db.AutoMigrate(&Job{}, &Language{}, &Framework{})
 
-	// // run scraper
-	// jobs := Scraper()
+	// run scraper
+	jobs := Scraper()
 
-	// // parse job descriptions
-	// Parser(jobs)
+	// parse job descriptions
+	jobs = Parser(jobs)
+
+	// insert jobs into the database
+	if err := InsertJobs(db, jobs); err != nil {
+		log.Fatalf("Failed to insert jobs: %v", err)
+	}
+
+	log.Printf("Successfully processed %d jobs", len(jobs))
 }
